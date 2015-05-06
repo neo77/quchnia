@@ -34,7 +34,6 @@ quchniaApp.controller('mainCtrl', [ '$scope', '$modal',  function($scope, $modal
             $scope.addAlert('success', 'Przedmiot został dodany. Niebawem pojawi się na stronie. Dzięki :)');
 
             
-            console.log(response);
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
             $scope.addAlert('warning', 'A może jednak chcesz dodać nowy przedmiot?');
@@ -46,6 +45,7 @@ quchniaApp.controller('mainCtrl', [ '$scope', '$modal',  function($scope, $modal
 quchniaApp.controller('modalCtrl', [ '$scope', '$modalInstance', function modalController($scope, $modalInstance) {
     $scope.ok = function () {
         $modalInstance.close($scope.item);
+
     };
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');

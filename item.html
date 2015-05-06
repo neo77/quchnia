@@ -84,7 +84,7 @@
             <div class=" col-sm-8 ">
                 <div class="row">
                     <div class="col-md-12">
-                        <rating ng-model="{{item.stars}}" max="5" on-hover="hoveringOver(value)" on-leave="overStar = null" ></rating>
+                        <rating ng-model="item.stars" max="5" on-hover="hoveringOver(value)" on-leave="overStar = null" ></rating>
                         <!--span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span-->
                         <h2>{{item.title}}</h4>
                         <p>{{item.about}}</p>

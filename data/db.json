@@ -7,7 +7,7 @@
         "timestamp": "2015-03-05",
         "images": [
             "img/items/biegnacy_stol.jpg",
-            "img/items/item1_2.jpg"
+            "img/items/pomidor-1.jpg"
         ],
         "stars": 4.25,
         "state": "accepted"
@@ -20,7 +20,7 @@
         "timestamp": "2015-03-05",
         "images": [
             "img/items/biegnacy_stol.jpg",
-            "img/items/item1_2.jpg"
+            "img/items/pomidor-1.jpg"
         ],
         "stars": 4.25,
         "state": "accepted"
@@ -33,7 +33,7 @@
         "timestamp": "2015-03-05",
         "images": [
             "img/items/biegnacy_stol.jpg",
-            "img/items/item1_2.jpg"
+            "img/items/pomidor-1.jpg"
         ],
         "stars": 4.25,
         "state": "accepted"
@@ -46,7 +46,7 @@
         "timestamp": "2015-03-05",
         "images": [
             "img/items/biegnacy_stol.jpg",
-            "img/items/item1_2.jpg"
+            "img/items/pomidor-1.jpg"
         ],
         "stars": 4.25,
         "state": "accepted"
@@ -59,7 +59,7 @@
         "timestamp": "2015-03-05",
         "images": [
             "img/items/biegnacy_stol.jpg",
-            "img/items/item1_2.jpg"
+            "img/items/pomidor-1.jpg"
         ],
         "stars": 4.25,
         "state": "rejected"
@@ -72,7 +72,7 @@
         "timestamp": "2015-03-05",
         "images": [
             "img/items/biegnacy_stol.jpg",
-            "img/items/item1_2.jpg"
+            "img/items/pomidor-1.jpg"
         ],
         "stars": 4.25,
         "state": "waiting"
@@ -85,7 +85,7 @@
         "timestamp": "2015-03-05",
         "images": [
             "img/items/biegnacy_stol.jpg",
-            "img/items/item1_2.jpg"
+                "img/items/pomidor-1.jpg"
         ],
         "stars": 4.25,
         "state": "waiting"
