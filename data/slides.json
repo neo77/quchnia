@@ -1,0 +1,26 @@
+{ 
+    "interval": 3000,
+    "slides": [
+        {
+            "image": "img/slides/banner1.jpg",
+            "text": "Any",
+            "active": 1
+        },
+        {
+            "image": "img/slides/banner2.jpg",
+            "text": "Any"
+        },
+        {
+            "image": "img/slides/banner3.jpg",
+            "text": "Any"
+        },
+        {
+            "image": "img/slides/banner4.jpg",
+            "text": "Any"
+        },
+        {
+            "image": "img/slides/banner5.jpg",
+            "text": "Any"
+        }
+    ]
+}

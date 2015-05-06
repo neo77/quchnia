@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en" ng-app="quchniaApp">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Quchnia</title>
+
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script src="bower_components/qrcode/lib/qrcode.min.js"></script>
+  <script src="bower_components/angular-qr/angular-qr.min.js"></script>
+
+  <script src="js/app.js"></script>
+
+  <link rel="stylesheet" href="bower_components/bootstrap-bower/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body ng-controller="alertsCtrl">
+    
+    <div ng-controller="mainCtrl">
+
+        <div ng-controller="carouselCtrl">
+                <div style="height: 305px">
+                <carousel interval="banner.interval">
+                    <slide ng-repeat="slide in banner.slides" active="slide.active">
+                        <img ng-src="{{slide.image}}" style="margin:auto;">
+                        <div class="carousel-caption">
+                                <h4>{{slide.header}}</h4>
+                                <p>{{slide.text}}</p>
+                        </div>
+                    </slide>
+            </carousel>
+            </div>
+
+
+        </div>
+
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" class='text-center' close="closeAlert($index)">{{alert.msg}}</alert>
+
+
+        <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Q</a>
+            </div>
+
+            <div class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="search.title" placeholder="Znajdź przedmiot...">
+                </div>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li ng-click="open()"><a href="#">Dodaj przedmiot</a></li>
+                <li ng-click="open()"><a href="#">Quchnia</a></li>
+                <li ng-click="open()"><a href="#">Kuchnia</a></li>
+            </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+        </nav>
+
+
+
+
+
+        <div class="row" ng-controller="itemsCtrl">
+            <div class="col-md-offset-1 col-md-10">
+                <h2>Ostatnie wpisy</h2>
+                <div class="table-responsive" ng-controller="editCtrl">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>QR Code</th>
+                                <th><a href="" ng-click="predicate='state'; reverse = !reverse">Stan</a></th>
+                                <th><a href="" ng-click="predicate='title'; reverse = !reverse">Przedmiot</a></th>
+                                <th>Opis</th>
+                                <th>Zdjęcie</th>
+                                <th>Akcje</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in items | orderBy:predicate:reverse">
+                                <td>
+                                    <qr text="item.hash" size="50" image="true" ></qr>
+                                </td>
+                                <td>
+                                    <span class="label" ng-class="item.state === 'accepted' ? 'label-success' : item.state === 'rejected' ? 'label-danger' : 'label-info'">
+                                        {{item.state}}
+                                    </span>
+                                </td>
+                                <td><b>{{item.title}}</b></td>
+                                <td>{{item.about | firstParagraph:50}}</td>
+                                <td><img ng-src="{{item.images[0]}}" style='max-width: 100px'></td>
+                                <td>
+                                    <button ng-hide="{{item.state === 'accepted'}}" class="btn btn-success btn-sm">akceptuj</button>
+                                    <button class="btn btn-info btn-sm">edytuj</button>
+                                    <button ng-hide="{{item.state === 'rejected'}}" class="btn btn-danger btn-sm">usuń</button>
+                                </td>
+                            </tr>  
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+</body>
+</html>
