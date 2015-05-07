@@ -55,7 +55,7 @@
 
             <div class="navbar-form navbar-left" role="search">
                 <div class="form-group">
-                    <input type="text" class="form-control" ng-model="search.title" placeholder="Znajdź przedmiot...">
+                    <input type="text" class="form-control" ng-model="search.title" placeholder="Znajdź przedmiot..." ng-controller="itemsCtrl">
                 </div>
             </div>
             <ul class="nav navbar-nav navbar-right">
@@ -63,7 +63,6 @@
                 <li ng-click="open()"><a href="#">Quchnia</a></li>
                 <li ng-click="open()"><a href="#">Kuchnia</a></li>
             </ul>
-            </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
         </nav>
 
@@ -75,7 +74,7 @@
 
             <div class="col-sm-offset-1 col-sm-10 ">
             <div class="row">
-                <div ng-repeat="item in items"> 
+                <div ng-repeat="item in items | filter:search"> 
                 <div class="col-sm-offset-1 col-sm-10 col-md-3 col-md-offset-1">
                         <div class="thumbnail">
                             <img ng-src="{{item.images[0]}}" />

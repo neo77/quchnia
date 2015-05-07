@@ -44,26 +44,25 @@
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Q</a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Q</a>
             </div>
 
-            <div class="navbar-form navbar-left" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" ng-model="search.title" placeholder="Znajdź przedmiot...">
-                </div>
+            <div class="navbar-form navbar-left" role="search" >
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="search.title" placeholder="Znajdź przedmiot..." ng-controller="editCtrl">
+                    </div>
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li ng-click="open()"><a href="#">Dodaj przedmiot</a></li>
                 <li ng-click="open()"><a href="#">Quchnia</a></li>
                 <li ng-click="open()"><a href="#">Kuchnia</a></li>
             </ul>
-            </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
         </nav>
 
@@ -83,12 +82,13 @@
                                 <th><a href="" ng-click="predicate='title'; reverse = !reverse">Przedmiot</a></th>
                                 <th>Opis</th>
                                 <th>Zdjęcie</th>
+                                <th><a href="" ng-click="predicate='timestamp'; reverse = !reverse">Dodane</a></th>
                                 <th>Akcje</th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in items | orderBy:predicate:reverse">
+                            <tr ng-repeat="item in items | filter:search | orderBy:predicate:reverse">
                                 <td>
                                     <qr text="item.hash" size="50" image="true" ></qr>
                                 </td>
@@ -100,10 +100,11 @@
                                 <td><b>{{item.title}}</b></td>
                                 <td>{{item.about | firstParagraph:50}}</td>
                                 <td><img ng-src="{{item.images[0]}}" style='max-width: 100px'></td>
+                                <td><b>{{item.timestamp}}</b></td>
                                 <td>
-                                    <button ng-hide="{{item.state === 'accepted'}}" class="btn btn-success btn-sm">akceptuj</button>
-                                    <button class="btn btn-info btn-sm">edytuj</button>
-                                    <button ng-hide="{{item.state === 'rejected'}}" class="btn btn-danger btn-sm">usuń</button>
+                                    <button ng-hide="{{item.state === 'accepted'}}" ng-click="acceptItem(item)" class="btn btn-success btn-sm">akceptuj</button>
+                                    <button class="btn btn-info btn-sm" ng-click="open(item.hash)">edytuj</button>
+                                    <button ng-hide="{{item.state === 'rejected'}}" ng-click="rejectItem(item)" class="btn btn-danger btn-sm">usuń</button>
                                 </td>
                             </tr>  
                         </tbody>
