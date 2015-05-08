@@ -71,7 +71,7 @@ quchniaApp.controller('alertsCtrl', [ '$scope', '$timeout', function($scope, $ti
 }]);
 
 quchniaApp.controller('mainCtrl', [ '$scope', '$modal', 'dbFactory', function($scope, $modal, dbFactory) {
-    $scope.search = {};
+    $scope.search = { };
     $scope.open = function (hash) {
         var modalInstance;
 
@@ -128,7 +128,8 @@ quchniaApp.controller('carouselCtrl', [ '$scope', '$http', function ($scope, $ht
         });
 }]);
 
-quchniaApp.controller('itemsCtrl', [ '$scope', '$http', 'dbFactory', function ($scope, $http, dbFactory) {
+quchniaApp.controller('itemsCtrl', [ '$scope', '$http', 'dbFactory',  function ($scope, $http, dbFactory, filterByState) {
+    // $scope.search.state = 'accepted';  # uncomment or add to getItems
     dbFactory.getItems(function(items) {
         $scope.items = items;
     });
@@ -138,6 +139,7 @@ quchniaApp.controller('itemsCtrl', [ '$scope', '$http', 'dbFactory', function ($
 
 
 quchniaApp.controller('editCtrl', [ '$scope', 'dbFactory', function ($scope, dbFactory) {
+    $scope.search.state = '';
     $scope.reverse = 1;
     $scope.predicate = 'state';
 
@@ -159,20 +161,8 @@ quchniaApp.filter('firstParagraph', function() {
     };
 });
 
-quchniaApp.filter('filterByTitle', function($scope) {
-  return function(input) {
-        if ($scope.search === '') {
-            return input;
-        }
-        if (input.title.match($scope.search)) {
-            return input;
-        } else {
-            return '';
-        }
 
 
-    };
-});
 
 quchniaApp.controller('itemCtrl', [ '$scope', '$http', 'dbFactory', function ($scope, $http, dbFactory) {
     dbFactory.getItems(function(items) {
