@@ -4,7 +4,7 @@
             <div ng-repeat="item in items | filter:search"> 
                 <div class="col-sm-offset-1 col-sm-10 col-md-3 col-md-offset-1">
                     <div class="thumbnail">
-                        <img ng-src="{{item.images[0]}}" />
+                        <a href="#/item/{{item.hash}}"><img ng-src="{{item.images[0]}}" /></a>
                     </div>
                     <qr ng-hide="item.images" text="item.hash" size="100" image="true"></qr>
                     <h4>{{item.title}}</h4>
