@@ -1,5 +1,23 @@
 
-var quchniaApp = angular.module('quchniaApp', [ 'ui.bootstrap', 'ja.qr' ] );
+var quchniaApp = angular.module('quchniaApp', [ 'ngRoute', 'ui.bootstrap', 'ja.qr' ] );
+
+quchniaApp.config(['$routeProvider',
+    function($routeProvider) {
+        $routeProvider.
+            when('/list', {
+                templateUrl: 'routes/list.html',
+                controller: 'itemsCtrl'
+            }).
+            when('/idea', {
+                templateUrl: 'routes/idea.html',
+            }).
+            when('/projekt', {
+                templateUrl: 'routes/project.html',
+            }).
+            otherwise({
+                redirectTo: 'list'
+            });
+}]);
 
 quchniaApp.factory('dbFactory', [ '$http', function($http) {
     var factory = {

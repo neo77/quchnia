@@ -7,6 +7,7 @@
   "private": true,
   "dependencies": {
     "angular": "latest",
+    "angular-route": "latest",
     "angular-bootstrap": "latest",
     "bootstrap-bower": "latest",
     "angular-qr": "latest",
