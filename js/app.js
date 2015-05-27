@@ -1,5 +1,5 @@
 
-var quchniaApp = angular.module('quchniaApp', [ 'ngRoute', 'ui.bootstrap', 'ja.qr' ] );
+var quchniaApp = angular.module('quchniaApp', [ 'ngAnimate', 'ngRoute', 'ui.bootstrap', 'ja.qr' ] );
 
 quchniaApp.config(['$routeProvider',
     function($routeProvider) {
@@ -32,51 +32,57 @@ quchniaApp.factory('dbFactory', [ '$http', function($http) {
     };
 
     factory.getItems = function(callback) {
-        //console.log(factory.items);
-        //if (factory.items === undefined) {
-            $http.get('data/db.json')
+            $http.get('backend/items')
                 .then(function(res) {
                     factory.items = res.data;
                     callback( factory.items );
                 });
-       // } else {
-       //     return [];
-       // }
     };
 
     factory.addItem = function(item) {
-        item.timestamp = new Date();
-        item.hash = '3333333'; // tmp;
-        item.images = [ 'img/items/pomidor-1.jpg' ]; //tmp
-        item.state = 'waiting';
-        item.stars = 0;
-        item.about = item.about || '';
-        item.about_me = item.about_me || '';
-        factory.items.push(item);
+        console.log(item);
+        $http.post('backend/item/add', item)
+            .then(function(res) {
+                $scope.items.push(item);
+                //callback( factory.items );
+            });
     };
 
     factory.getItem = function(hash, callback) {
         if (hash === undefined) { 
             callback({});
         }
-        factory.getItems( function() {
-            for (var index in factory.items)  {
-                console.log(factory.items[index].hash + " = " + hash + "?");
-                if (factory.items[index].hash === hash) { 
-                    callback( factory.items[index] ); 
-                    return;
-                }
-            }
-            callback({});
-        });
+        $http.get('backend/item/get/'+hash)
+            .then(function(res) {
+                factory.item = res.data;
+                callback( res.data );
+            });
     };
 
     factory.updateItem = function(item) {
-        factory.getItem(item.hash, function(dbItem) {
-            angular.forEach(item, function(value,key) {
-                dbItem[key] = value;
+        $http.put('backend/item/update/'+item.hash, item)
+            .then(function(res) {
+               // factory.item = res.data;
+               // callback( res.data );
             });
-        });
+
+    };
+    factory.acceptItem = function(item) {
+        $http.get('backend/item/accept/'+item.hash, item)
+            .then(function(res) {
+               item.state = 'accepted';
+               // callback( res.data );
+            });
+
+    };
+    factory.rejectItem = function(item) {
+        $http.get('backend/item/reject/'+item.hash, item)
+            .then(function(res) {
+               item.state = 'rejected';
+               // factory.item = res.data;
+               // callback( res.data );
+            });
+
     };
     return factory;
 }]);
@@ -113,31 +119,34 @@ quchniaApp.controller('mainCtrl', [ '$scope', '$modal', 'dbFactory', function($s
                 $scope.edit = true;
             } else {
                 $scope.edit = false;
+                $scope.item = {};
             }
+            console.log('opening modal');
             modalInstance = $modal.open( {
-                'templateUrl': 'add_modal.html',
+                'templateUrl': 'modals/add_modal.html',
                 'controller': 'modalCtrl',
                 'size': 'lg',
                 'scope': $scope
             });
+
+            modalInstance.result.then(function (response) {
+                if ($scope.edit) {
+                    dbFactory.updateItem(response);        
+                    $scope.addAlert('success', 'Edycja udana');
+                } else {     
+                    dbFactory.addItem(response);        
+                    $scope.addAlert('success', 'Przedmiot został dodany. Niebawem pojawi się na stronie. Dzięki :)');
+                }
+                
+            }, function () {
+                if ($scope.edit) {
+                    $scope.addAlert('warning', 'Nie to nie :P');
+                } else {
+                    $scope.addAlert('warning', 'A może jednak chcesz dodać nowy przedmiot?');
+                }
+            });
         });
  
-        modalInstance.result.then(function (response) {
-            if ($scope.edit) {
-                dbFactory.updateItem(response);        
-                $scope.addAlert('success', 'Edycja udana');
-            } else {     
-                dbFactory.addItem(response);        
-                $scope.addAlert('success', 'Przedmiot został dodany. Niebawem pojawi się na stronie. Dzięki :)');
-            }
-            
-        }, function () {
-            if ($scope.edit) {
-                $scope.addAlert('warning', 'Nie to nie :P');
-            } else {
-                $scope.addAlert('warning', 'A może jednak chcesz dodać nowy przedmiot?');
-            }
-        });
     };
 }]);
 
@@ -167,11 +176,15 @@ quchniaApp.controller('editCtrl', [ '$scope', 'dbFactory', function ($scope, dbF
     $scope.reverse = 1;
     $scope.predicate = 'state';
 
-    $scope.rejectItem = function(item) {
-        dbFactory.updateItem({ "hash": item.hash, "state": "rejected"});
-    };
+
     $scope.acceptItem = function(item) {
-        dbFactory.updateItem({ "hash": item.hash, "state": "accepted"});
+        dbFactory.acceptItem(item);
+        dbFactory.getItems(function(items) {
+            $scope.items = items;
+        });
+    };
+    $scope.rejectItem = function(item) {
+        dbFactory.rejectItem(item);
     };
 }]);
 
@@ -194,6 +207,9 @@ quchniaApp.filter('firstParagraph', function() {
   return function(input, limit) {
         if (!limit) {
             limit = 300;
+        }
+        if (!input) { 
+            return '';
         }
         return input.length > limit ? input.substr(0,limit-1)+'...' : input;
 

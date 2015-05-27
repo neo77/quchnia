@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-sm-2">
+        <div class="row">
+            <div class="col-md-offset-4">
+                <div class="thumbnail" ng-repeat="image in item.images">
+                    <img ng-src="img/items/{{image.path}}">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="row">
+            <div class="col-md-12">
+                <rating ng-model="item.stars" max="5" on-hover="hoveringOver(value)" on-leave="overStar = null" ></rating>
+                <!--span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span-->
+                <h2>{{item.title}}</h4>
+                <p>{{item.about}}</p>
+                <h4>O autorze</h4>
+                <p>{{item.about_me}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <qr ng-show="item.hash != 'QR Code'" text="item.hash" size="100" image="true"></qr>
+    <div>
+</div>
+
