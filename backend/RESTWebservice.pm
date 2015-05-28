@@ -54,7 +54,7 @@ sub _get_params {
 
     $p_query_tmpl =~ s/^\///;
 
-    my $qs = $p_env->{ 'QUERY_STRING' };
+    my $qs = $p_env->{ 'QS' };
 
 #    $qs =~ s/\/$//;
 
@@ -94,7 +94,9 @@ sub _request {
     my $query_rx = $p_query_tmpl;
     $query_rx =~ s/:[^\/]+/([^\/]+)/g;
 
-    if ( $p_env->{ 'QUERY_STRING' } =~ /$query_rx/ ) {
+    $p_env->{'QS'} =  $p_env->{'REDIRECT_QUERY_STRING'} // $p_env->{ 'QUERY_STRING' };  
+
+    if ( $p_env->{ 'QS' } =~ /$query_rx/ ) {
         &$p_callback( _get_params( $p_query_tmpl, $query_rx, $p_env ) );
     } else {
         return 0;
