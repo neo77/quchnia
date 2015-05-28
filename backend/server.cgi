@@ -11,25 +11,23 @@ use strict;
 use warnings;
 use utf8;
 
+use FindBin qw/$Bin/;
+use lib "../..";
 our $VERSION = 1.0;
 use FCGI;           # fastcgi
 use Digest::MD5;    # md5 for token
 use JSON;           # json opp
-use DBI;            # db interface
 
 #=------------------------------------------------------------------------( use, constants )
 
-use FindBin qw/$Bin/;
 use RESTWebservice;
-
+use DB;
 # FIXME (autoACR): write why are you using RESTWebservice (do you realy need it?)
 
 #=------------------------------------------------------------------------( functions )
 
 sub db_connect {
-    my $dsn = 'DBI:mysql:database=quchnia;host=localhost';
-    return DBI->connect( $dsn, 'quchnia', 'quchnia', { auto_reconnect => 1, set_names => 'utf8'} );
-
+    DB->dbconnect;
 }
 
 sub error {
