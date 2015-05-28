@@ -1,5 +1,5 @@
 
-var quchniaApp = angular.module('quchniaApp', [ 'ngAnimate', 'ngRoute', 'ui.bootstrap', 'ja.qr' ] );
+var quchniaApp = angular.module('quchniaApp', [ 'ngRoute', 'ui.bootstrap', 'ja.qr' ] );
 
 quchniaApp.config(['$routeProvider',
     function($routeProvider) {
