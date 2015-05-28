@@ -12,6 +12,7 @@
     "angular-bootstrap": "latest",
     "bootstrap-bower": "latest",
     "angular-qr": "latest",
+    "underscore": "latest",
     "qrcode": "latest"
   },
   "resolutions": {

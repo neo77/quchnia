@@ -31,9 +31,9 @@
                         <td><img ng-src="img/items/{{item.images[0].path}}" style='max-width: 100px'></td>
                         <td><b>{{item.timestamp}}</b></td>
                         <td>
-                            <button ng-hide="{{item.state === 'accepted'}}" ng-click="acceptItem(item)" class="btn btn-success btn-sm">akceptuj</button>
+                            <button ng-show="{{item.state !== 'accepted'}}" ng-click="acceptItem(item)" class="btn btn-success btn-sm">akceptuj</button>
                             <button class="btn btn-info btn-sm" ng-click="open(item.hash)">edytuj</button>
-                            <button ng-hide="{{item.state === 'rejected'}}" ng-click="rejectItem(item)" class="btn btn-danger btn-sm">usuń</button>
+                            <button ng-show="{{item.state !== 'rejected'}}" ng-click="rejectItem(item)" class="btn btn-danger btn-sm">usuń</button>
                         </td>
                     </tr>  
                 </tbody>

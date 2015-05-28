@@ -43,8 +43,8 @@ quchniaApp.factory('dbFactory', [ '$http', function($http) {
         console.log(item);
         $http.post('backend/item/add', item)
             .then(function(res) {
-                $scope.items.push(item);
-                //callback( factory.items );
+                factory.items.push(item);
+                callback( factory.items );
             });
     };
 
@@ -62,25 +62,34 @@ quchniaApp.factory('dbFactory', [ '$http', function($http) {
     factory.updateItem = function(item) {
         $http.put('backend/item/update/'+item.hash, item)
             .then(function(res) {
-               // factory.item = res.data;
-               // callback( res.data );
+                factory.getItems( 
+                    function (items) { 
+                        callback(items); 
+                    }
+                );
             });
 
     };
-    factory.acceptItem = function(item) {
+    factory.acceptItem = function(item,callback) {
         $http.get('backend/item/accept/'+item.hash, item)
             .then(function(res) {
-               item.state = 'accepted';
-               // callback( res.data );
+                factory.getItems( 
+                    function (items) { 
+                        callback(items); 
+                    }
+                );
+
             });
 
     };
-    factory.rejectItem = function(item) {
+    factory.rejectItem = function(item,callback) {
         $http.get('backend/item/reject/'+item.hash, item)
             .then(function(res) {
-               item.state = 'rejected';
-               // factory.item = res.data;
-               // callback( res.data );
+                factory.getItems( 
+                    function (items) { 
+                        callback(items); 
+                    }
+                );
             });
 
     };
@@ -178,13 +187,10 @@ quchniaApp.controller('editCtrl', [ '$scope', 'dbFactory', function ($scope, dbF
 
 
     $scope.acceptItem = function(item) {
-        dbFactory.acceptItem(item);
-        dbFactory.getItems(function(items) {
-            $scope.items = items;
-        });
+        dbFactory.acceptItem(item,  function(items) { $scope.items = items; });
     };
     $scope.rejectItem = function(item) {
-        dbFactory.rejectItem(item);
+        dbFactory.rejectItem(item, function(items) { $scope.items = items; });
     };
 }]);
 
