@@ -5,7 +5,7 @@
 #* Info: Webservice main lib
 #* Owner: Pawel Guspiel (neo77), <neo@cpan.org>
 #*
-package DB;
+package DBdata;
 
 use strict;
 use warnings;

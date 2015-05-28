@@ -20,13 +20,13 @@ use JSON;           # json opp
 #=------------------------------------------------------------------------( use, constants )
 
 use RESTWebservice;
-use DB;
+use DBdata;
 # FIXME (autoACR): write why are you using RESTWebservice (do you realy need it?)
 
 #=------------------------------------------------------------------------( functions )
 
 sub db_connect {
-    DB->db_connect;
+    DBdata::db_connect;
 }
 
 sub error {
