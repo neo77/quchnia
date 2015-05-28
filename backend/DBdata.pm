@@ -32,3 +32,4 @@ sub db_connect {
 # TODO (autoACR): update function/group documentation at header (put_description_here)
 # TODO (autoACR): update function documentation at header (put_return_value_here)
 
+1;
