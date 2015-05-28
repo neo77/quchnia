@@ -26,7 +26,7 @@ use DB;
 #=------------------------------------------------------------------------( functions )
 
 sub db_connect {
-    DB->dbconnect;
+    DB->db_connect;
 }
 
 sub error {
