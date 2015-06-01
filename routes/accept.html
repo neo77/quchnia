@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-md-offset-1 col-md-10">
         <h2>Ostatnie wpisy</h2>
-        <div class="table-responsive" ng-controller="editCtrl">
+        <div class="table-responsive" ng-controller="acceptCtrl">
             <table class="table table-condensed">
                 <thead>
                     <tr>
@@ -19,7 +19,7 @@
                 <tbody>
                     <tr ng-repeat="item in items | filter:search | orderBy:predicate:reverse">
                         <td>
-                            <qr text="item.hash" size="50" image="true" ></qr>
+                            <qr text="'http://kuchnia.7lam.pl/#/item/show/'+item.hash" size="50" image="true" ></qr>
                         </td>
                         <td>
                             <span class="label" ng-class="item.state === 'accepted' ? 'label-success' : item.state === 'rejected' ? 'label-danger' : 'label-info'">
@@ -32,7 +32,7 @@
                         <td><b>{{item.timestamp}}</b></td>
                         <td>
                             <button ng-show="{{item.state !== 'accepted'}}" ng-click="acceptItem(item)" class="btn btn-success btn-sm">akceptuj</button>
-                            <button class="btn btn-info btn-sm" ng-click="open(item.hash)">edytuj</button>
+                            <a class="btn btn-info btn-sm" href="#/item/edit/{{item.hash}}">edytuj</a>
                             <button ng-show="{{item.state !== 'rejected'}}" ng-click="rejectItem(item)" class="btn btn-danger btn-sm">usuń</button>
                         </td>
                     </tr>  

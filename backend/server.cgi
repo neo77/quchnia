@@ -16,7 +16,8 @@ our $VERSION = 1.0;
 use FCGI;           # fastcgi
 use Digest::MD5;    # md5 for token
 use JSON;           # json opp
-
+use MIME::Parser;   # parser;
+use File::Path;                     # mkpath
 #=------------------------------------------------------------------------( use, constants )
 
 use RESTWebservice;
@@ -124,6 +125,52 @@ sub item_reject {
     my %p_ = @_;
     _item_update(hash => $p_{'hash'}, state => 'rejected');
 }
+
+sub image_upload {
+    my %p_ = @_;
+    my $parser = MIME::Parser->new;
+    $parser->output_dir("/tmp");
+    my $tmp_file = $parser->parse_data($p_{'___content'})->bodyhandle->{'MB_Path'};
+
+    my $data = {};
+    {
+        open my $tmpf ,'<', "$tmp_file";
+        local $/="\r\n";
+        $data->{'chunk'} = <$tmpf>;
+        chomp($data->{'chunk'});
+   
+        while (my $line = <$tmpf>) {
+            if ($line =~ /name="file"; filename="(.+)"/) {
+                $data->{'filename'} = $1;
+                $data->{'content-type'} = <$tmpf>;
+                my $nothing = <$tmpf>;
+                while (my $content_line = <$tmpf>) {
+                    my $dir = $data->{'dir'};
+                    if ($content_line =~ /------/) {
+                        chomp $data->{'content'};
+                        last;
+                    }
+                    $data->{'content'} .= $content_line;
+                }
+            }
+            if ($line =~ /----([^-]+)/) {
+                 
+                $data->{'dir'} = $1;
+                chomp($data->{'dir'});
+            }
+        }
+        close($tmpf);
+    };
+    my $webdir = "img/items/".$data->{'dir'};
+    my $dir = "$Bin/../".$webdir;
+    mkpath($dir);
+    my $path = $dir.'/'.$data->{'filename'};
+    my $webpath = $webdir.'/'.$data->{'filename'};
+    open my $file ,'>', $path;
+    print $file $data->{'content'};
+    close($file);
+    return { 'path' => $webpath };
+}
 #=------------------------------------------------------------------------( main )
 
 #=--------
@@ -133,6 +180,7 @@ sub item_reject {
 #* RETURN: OK
 sub start {
     my $header  = "Content-type: text/x-json; charset=utf8\r\n\r\n";
+    my $header_txt  = "Content-type: text/plain; charset=utf8\r\n\r\n";
     my $request = FCGI::Request();
 
     my $response;
@@ -153,13 +201,22 @@ sub start {
         ||
         get( '/item/reject/:hash' => \&item_reject, $env )
         || 
+        get( '/image/upload/:params' => \&image_upload_start, $env )
+        ||
+        post( '/image/upload' => \&image_upload, $env )
+        || 
         error('Niepoprawna funkcja, tez mi troche przykro.. ale nie az tak');
 
         #  } continue {
 
         # --- print output ---
-        print $header;
-        print JSON::encode_json( $response );
+        if (!ref($response)) {
+            print $header_txt;
+            print $response;
+        } else {
+            print $header;
+            print JSON::encode_json( $response );
+        }
         $request->Finish;
 
     } #+ end of: continue

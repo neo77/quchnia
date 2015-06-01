@@ -1,15 +1,23 @@
 
-var quchniaApp = angular.module('quchniaApp', [ 'ngRoute', 'ui.bootstrap', 'ja.qr' ] );
+var quchniaApp = angular.module('quchniaApp', [ 'ngRoute', 'ui.bootstrap', 'ja.qr', 'flow' ] );
 
-quchniaApp.config(['$routeProvider',
-    function($routeProvider) {
+quchniaApp.config(['$routeProvider', 'flowFactoryProvider',
+    function($routeProvider, flowFactoryProvider) {
         $routeProvider.
             when('/admin/accept', {
                 templateUrl: 'routes/accept.html',
                 controller: 'itemsCtrl'
             }).
-            when('/item/:hash', {
+            when('/item/show/:hash', {
                 templateUrl: 'routes/item.html',
+                controller: 'itemCtrl'
+            }).
+            when('/item/add', {
+                templateUrl: 'routes/addedit.html',
+                controller: 'itemCtrl'
+            }).
+            when('/item/edit/:hash', {
+                templateUrl: 'routes/addedit.html',
                 controller: 'itemCtrl'
             }).
             when('/list', {
@@ -25,6 +33,22 @@ quchniaApp.config(['$routeProvider',
             otherwise({
                 redirectTo: 'list'
             });
+
+        flowFactoryProvider.defaults = {
+            target: 'backend/image/upload/',
+            permanentErrors: [404, 500, 501],
+            successStatuses: [200,201,202],
+            maxChunkRetries: 1,
+            chunkRetryInterval: 5000,
+            simultaneousUploads: 4,
+        //    method: 'octets',
+            testChunks: false,
+            chunkSize: 2000000
+        };
+   //     flowFactoryProvider.on('catchAll', function (event) {
+   //         console.log('catchAll', arguments);
+    //    });
+
 }]);
 
 quchniaApp.factory('dbFactory', [ '$http', function($http) {
@@ -39,8 +63,7 @@ quchniaApp.factory('dbFactory', [ '$http', function($http) {
                 });
     };
 
-    factory.addItem = function(item) {
-        console.log(item);
+    factory.addItem = function(item, callback) {
         $http.post('backend/item/add', item)
             .then(function(res) {
                 factory.items.push(item);
@@ -59,7 +82,7 @@ quchniaApp.factory('dbFactory', [ '$http', function($http) {
             });
     };
 
-    factory.updateItem = function(item) {
+    factory.updateItem = function(item, callback) {
         $http.put('backend/item/update/'+item.hash, item)
             .then(function(res) {
                 factory.getItems( 
@@ -117,10 +140,12 @@ quchniaApp.controller('alertsCtrl', [ '$scope', '$timeout', function($scope, $ti
 
 }]);
 
-quchniaApp.controller('mainCtrl', [ '$scope', '$modal', 'dbFactory', function($scope, $modal, dbFactory) {
+quchniaApp.controller('mainCtrl', [ '$scope', 'dbFactory', function($scope,  dbFactory) {
     $scope.search = { };
-    $scope.open = function (hash) {
-        var modalInstance;
+    /*
+    var modalInstance;
+ 
+    $scope.openModal = function (hash) {
 
         dbFactory.getItem(hash, function(result) {
             $scope.item = result;
@@ -130,7 +155,6 @@ quchniaApp.controller('mainCtrl', [ '$scope', '$modal', 'dbFactory', function($s
                 $scope.edit = false;
                 $scope.item = {};
             }
-            console.log('opening modal');
             modalInstance = $modal.open( {
                 'templateUrl': 'modals/add_modal.html',
                 'controller': 'modalCtrl',
@@ -140,10 +164,10 @@ quchniaApp.controller('mainCtrl', [ '$scope', '$modal', 'dbFactory', function($s
 
             modalInstance.result.then(function (response) {
                 if ($scope.edit) {
-                    dbFactory.updateItem(response);        
+                    dbFactory.updateItem(response,  function(items) { $scope.items = items; });
                     $scope.addAlert('success', 'Edycja udana');
                 } else {     
-                    dbFactory.addItem(response);        
+                    dbFactory.addItem(response, function(items) { $scope.items = items; });        
                     $scope.addAlert('success', 'Przedmiot został dodany. Niebawem pojawi się na stronie. Dzięki :)');
                 }
                 
@@ -154,12 +178,13 @@ quchniaApp.controller('mainCtrl', [ '$scope', '$modal', 'dbFactory', function($s
                     $scope.addAlert('warning', 'A może jednak chcesz dodać nowy przedmiot?');
                 }
             });
+            
         });
- 
     };
+    */
 }]);
 
-
+/*
 quchniaApp.controller('modalCtrl', [ '$scope', '$modalInstance', function modalController($scope, $modalInstance) {
     $scope.ok = function () {
         $modalInstance.close($scope.item);
@@ -168,6 +193,8 @@ quchniaApp.controller('modalCtrl', [ '$scope', '$modalInstance', function modalC
         $modalInstance.dismiss('cancel');
     };
 }]);
+
+*/
 
 quchniaApp.controller('carouselCtrl', [ '$scope', '$http', function ($scope, $http) {
     $scope.slides = {};
@@ -178,9 +205,7 @@ quchniaApp.controller('carouselCtrl', [ '$scope', '$http', function ($scope, $ht
 }]);
 
 
-
-
-quchniaApp.controller('editCtrl', [ '$scope', 'dbFactory', function ($scope, dbFactory) {
+quchniaApp.controller('acceptCtrl', [ '$scope', 'dbFactory', function ($scope, dbFactory) {
     $scope.search.state = '';
     $scope.reverse = 1;
     $scope.predicate = 'state';
@@ -188,9 +213,13 @@ quchniaApp.controller('editCtrl', [ '$scope', 'dbFactory', function ($scope, dbF
 
     $scope.acceptItem = function(item) {
         dbFactory.acceptItem(item,  function(items) { $scope.items = items; });
+        $scope.predicate = undefined;
+        $scope.reverse = 0;
     };
     $scope.rejectItem = function(item) {
         dbFactory.rejectItem(item, function(items) { $scope.items = items; });
+        $scope.predicate = undefined;
+        $scope.reverse = 0;
     };
 }]);
 
@@ -202,11 +231,45 @@ quchniaApp.controller('itemsCtrl', [ '$scope', '$http', 'dbFactory',  function (
 
 }]);
 
-quchniaApp.controller('itemCtrl', [ '$scope', '$http', '$routeParams', 'dbFactory', function ($scope, $http, $routeParams, dbFactory) {
-    $scope.item = { 'hash': 'QR Code' };
-    dbFactory.getItem($routeParams.hash, function(item) {
-        $scope.item = item;
-    });
+quchniaApp.controller('itemCtrl', [ '$scope', '$routeParams', 'dbFactory', '$window',  function ($scope, $routeParams, dbFactory, $window ) {
+    $scope.item = { 'hash': 'QR Code', images: [] };
+    if ($routeParams.hash) {
+        dbFactory.getItem($routeParams.hash, function(item) {
+            if (item.hash !== 'QR Code') {
+                $scope.edit = 1;
+                $scope.item = item;
+            }
+        });
+    }
+    $scope.success = function(file,message) {
+        $scope.item.images.push(angular.fromJson(message));
+    };
+
+
+
+
+    $scope.ok = function() {
+        if ($scope.edit) {
+            dbFactory.updateItem($scope.item,  function(items) { $scope.items = items; });
+            $scope.addAlert('success', 'Edycja udana');
+        } else {     
+            dbFactory.addItem($scope.item, function(items) { $scope.items = items; });        
+            $scope.addAlert('success', 'Przedmiot został dodany. Niebawem pojawi się na stronie. Dzięki :)');
+        }
+        $window.history.back();
+            
+    };
+
+    $scope.cancel = function() {
+        if ($scope.edit) {
+            $scope.addAlert('warning', 'Nie to nie :P');
+        } else {
+            $scope.addAlert('warning', 'A może jednak chcesz dodać nowy przedmiot?');
+        }
+        $window.history.back();
+        //scope.$apply();
+    };
+
 }]);
 
 quchniaApp.filter('firstParagraph', function() {
