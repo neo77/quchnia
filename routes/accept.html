@@ -28,8 +28,8 @@
                         </td>
                         <td><b>{{item.title}}</b></td>
                         <td>{{item.about | firstParagraph:50}}</td>
-                        <td><img ng-src="img/items/{{item.images[0].path}}" style='max-width: 100px'></td>
-                        <td><b>{{item.timestamp}}</b></td>
+                        <td><img ng-src="{{item.images[0].path}}" style='max-width: 100px'></td>
+                        <td><b>{{item.create_date}}</b></td>
                         <td>
                             <button ng-show="{{item.state !== 'accepted'}}" ng-click="acceptItem(item)" class="btn btn-success btn-sm">akceptuj</button>
                             <a class="btn btn-info btn-sm" href="#/item/edit/{{item.hash}}">edytuj</a>

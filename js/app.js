@@ -55,12 +55,20 @@ quchniaApp.factory('dbFactory', [ '$http', function($http) {
     var factory = {
     };
 
-    factory.getItems = function(callback) {
-            $http.get('backend/items')
-                .then(function(res) {
-                    factory.items = res.data;
-                    callback( factory.items );
-                });
+    factory.getItems = function(callback, active) {
+            if (active) {
+                $http.get('backend/items')
+                    .then(function(res) {
+                        factory.items = res.data;
+                        callback( factory.items );
+                    });
+            } else {
+                $http.get('backend/items/active')
+                    .then(function(res) {
+                        factory.items = res.data;
+                        callback( factory.items );
+                    });
+            }
     };
 
     factory.addItem = function(item, callback) {
@@ -213,21 +221,20 @@ quchniaApp.controller('acceptCtrl', [ '$scope', 'dbFactory', function ($scope, d
 
     $scope.acceptItem = function(item) {
         dbFactory.acceptItem(item,  function(items) { $scope.items = items; });
-        $scope.predicate = undefined;
-        $scope.reverse = 0;
+        //$scope.predicate = undefined;
     };
     $scope.rejectItem = function(item) {
         dbFactory.rejectItem(item, function(items) { $scope.items = items; });
-        $scope.predicate = undefined;
-        $scope.reverse = 0;
+        //$scope.predicate = undefined;
     };
 }]);
 
-quchniaApp.controller('itemsCtrl', [ '$scope', '$http', 'dbFactory',  function ($scope, $http, dbFactory, filterByState) {
+quchniaApp.controller('itemsCtrl', [ '$scope', '$http', 'dbFactory',  function ($scope, $http, dbFactory) {
     // $scope.search.state = 'accepted';  # uncomment or add to getItems
-    dbFactory.getItems(function(items) {
+    
+    dbFactory.getItems( function(items) {
         $scope.items = items;
-    });
+    }, $scope.activeOnly);
 
 }]);
 
@@ -251,7 +258,7 @@ quchniaApp.controller('itemCtrl', [ '$scope', '$routeParams', 'dbFactory', '$win
     $scope.ok = function() {
         if ($scope.edit) {
             dbFactory.updateItem($scope.item,  function(items) { $scope.items = items; });
-            $scope.addAlert('success', 'Edycja udana');
+            $scope.addAlert('success', 'Udało się! Pięknie!');
         } else {     
             dbFactory.addItem($scope.item, function(items) { $scope.items = items; });        
             $scope.addAlert('success', 'Przedmiot został dodany. Niebawem pojawi się na stronie. Dzięki :)');

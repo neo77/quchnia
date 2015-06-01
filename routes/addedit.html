@@ -4,7 +4,8 @@
     flow-file-success="success($file,$message)"
     class="col-md-offset-2 col-md-8">
     <div class="modal-header">
-        <h3>Dodaj nowy przedmiot</h3>
+        <h3 ng-hide="edit">Dodaj nowy przedmiot</h3>
+        <h3 ng-show="edit">Edycja ({{item.hash}})</h3>
     </div>
     
     <div class="container-fluid modal-body" >
@@ -34,10 +35,14 @@
                 </form>
                 <div class="row">
 
-                    <div class="col-sm-2" ng-repeat="file in $flow.files">
+                    <div class="col-sm-2" ng-hide="edit" ng-repeat="file in $flow.files">
                         <img  class="img-responsive" flow-img="$flow.files[$index]">
                     </div>
+                    <div class="col-sm-2" ng-show="edit" ng-repeat="image in item.images">
+                        <img  class="img-responsive" ng-src="{{image.path}}">
                     </div>
+
+                </div>
 
 
             </div>
