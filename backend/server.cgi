@@ -197,7 +197,7 @@ sub start {
         || 
         post( '/item/add' => \&item_add, $env )
         ||
-        put( '/item/update/:hash' => \&item_update, $env )
+        post( '/item/update/:hash' => \&item_update, $env )
         ||
         get( '/item/accept/:hash' => \&item_accept, $env )
         ||

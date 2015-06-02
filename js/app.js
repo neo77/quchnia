@@ -91,7 +91,7 @@ quchniaApp.factory('dbFactory', [ '$http', function($http) {
     };
 
     factory.updateItem = function(item, callback) {
-        $http.put('backend/item/update/'+item.hash, item)
+        $http.post('backend/item/update/'+item.hash, item)
             .then(function(res) {
                 factory.getItems( 
                     function (items) { 
@@ -264,6 +264,7 @@ quchniaApp.controller('itemCtrl', [ '$scope', '$routeParams', 'dbFactory', '$win
             $scope.addAlert('success', 'Przedmiot został dodany. Niebawem pojawi się na stronie. Dzięki :)');
         }
         $window.history.back();
+        $scope.$apply();
             
     };
 
