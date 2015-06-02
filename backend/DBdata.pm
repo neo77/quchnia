@@ -25,8 +25,8 @@ use DBI;    # db interface
 #* RETURN: put_return_value_here
 sub db_connect {
     my $dsn = 'DBI:mysql:database=neo77_kuchnia;host=localhost';
-    return DBI->connect( $dsn, 'neo77_kuchnia', 'X9eVAdwA', { auto_reconnect => 1, set_names => 'utf8' } );
-
+    my $dbh =  DBI->connect( $dsn, 'neo77_kuchnia', 'X9eVAdwA', { auto_reconnect => 1, set_names => 'utf8' } );
+    return $dbh;
 } #+ end of: sub db_connect
 
 # TODO (autoACR): update function/group documentation at header (put_description_here)

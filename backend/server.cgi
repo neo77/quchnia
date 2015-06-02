@@ -18,6 +18,8 @@ use Digest::MD5;    # md5 for token
 use JSON;           # json opp
 use MIME::Parser;   # parser;
 use File::Path;                     # mkpath
+
+#binmode 'STDOUT', ':utf8';
 #=------------------------------------------------------------------------( use, constants )
 
 use RESTWebservice;
@@ -215,7 +217,7 @@ sub start {
             print $response;
         } else {
             print $header;
-            print JSON::encode_json( $response );
+            print JSON->new->utf8(0)->encode( $response );
         }
         $request->Finish;
 
