@@ -2,8 +2,8 @@
     <div class="col-sm-2">
         <div class="row">
             <div class="col-md-offset-4">
-                <div class="thumbnail" ng-repeat="image in item.images">
-                    <img ng-src="{{image.path}}">
+                <div class="thumbnail" ng-repeat="image in item.images" >
+                    <img ng-src="{{image.path}}"  ng-click="switchImage(image.path)">
                 </div>
             </div>
         </div>
@@ -17,6 +17,7 @@
                 <p>{{item.about}}</p>
                 <h4>O autorze</h4>
                 <p>{{item.about_me}}</p>
+                <img ng-src="{{galleryImage}}" ng-show="imageShow" class="img-responsive">
             </div>
         </div>
     </div>

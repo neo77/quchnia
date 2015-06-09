@@ -246,11 +246,22 @@ quchniaApp.controller('itemCtrl', [ '$scope', '$routeParams', 'dbFactory', '$win
             if (item.hash !== 'QR Code') {
                 $scope.edit = 1;
                 $scope.item = item;
+                console.log("here");
+                $scope.galleryImage = item.images[0].path;
+                $scope.imageShow = 1;
             }
         });
     }
     $scope.success = function(file,message) {
         $scope.item.images.push(angular.fromJson(message));
+    };
+    $scope.switchImage = function(image) {
+        $scope.galleryImage = image;
+        $scope.imageShow = 1;
+    };
+    $scope.switchToQR = function() {
+        $scope.galleryImage = '';
+        $scope.imageShow = 0;
     };
 
 
