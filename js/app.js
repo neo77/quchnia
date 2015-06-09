@@ -43,7 +43,7 @@ quchniaApp.config(['$routeProvider', 'flowFactoryProvider',
             simultaneousUploads: 4,
         //    method: 'octets',
             testChunks: false,
-            chunkSize: 2000000
+            chunkSize: 5000000
         };
    //     flowFactoryProvider.on('catchAll', function (event) {
    //         console.log('catchAll', arguments);
