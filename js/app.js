@@ -1,5 +1,5 @@
 
-var quchniaApp = angular.module('quchniaApp', [ 'ngRoute', 'ui.bootstrap', 'ja.qr', 'flow' ] );
+var quchniaApp = angular.module('quchniaApp', [ 'ngRoute', 'ui.bootstrap', 'ja.qr', 'flow', 'youtube-embed' ] );
 
 quchniaApp.config(['$routeProvider', 'flowFactoryProvider',
     function($routeProvider, flowFactoryProvider) {
@@ -26,6 +26,7 @@ quchniaApp.config(['$routeProvider', 'flowFactoryProvider',
             }).
             when('/idea', {
                 templateUrl: 'routes/idea.html',
+                controller: 'ideaCtrl'
             }).
             when('/projekt', {
                 templateUrl: 'routes/project.html',
@@ -276,6 +277,15 @@ quchniaApp.controller('itemCtrl', [ '$scope', '$routeParams', 'dbFactory', '$win
         }
         $window.history.back();
         //scope.$apply();
+    };
+
+}]);
+
+quchniaApp.controller('ideaCtrl', [ '$scope', function($scope) {
+    $scope.ideaMovie = 'rA1boddSlpM';
+    $scope.playerVars = { 
+        autoplay: 1,
+        controls: 1
     };
 
 }]);

@@ -9,18 +9,19 @@
             </button>
             <a class="navbar-brand" href="#/list">Q</a>
         </div>
-
         <div class="navbar-form navbar-left" role="search">
             <div class="form-group">
                 <input type="text" class="form-control" ng-model="search.title" placeholder="Znajdź przedmiot..." ng-controller="itemsCtrl">
             </div>
         </div>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="#/admin/accept">Admin</a></li>
-            <li><a href="#/item/add">Dodaj przedmiot</a></li>
-            <li><a href="#/idea">Idea</a></li>
-            <li><a href="#/projekt">Projekt</a></li>
-        </ul>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#/admin/accept">Admin</a></li>
+                <li><a href="#/item/add">Dodaj przedmiot</a></li>
+                <li><a href="#/idea">Idea</a></li>
+                <li><a href="#/projekt">Projekt</a></li>
+            </ul>
+        </div>
     </div><!-- /.container-fluid -->
 </nav>
 
