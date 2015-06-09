@@ -3,15 +3,16 @@
         <div class="row"> 
             <div ng-repeat="item in items | filter:search " > 
                 <div class="col-sm-offset-1 col-sm-10 col-md-3 col-md-offset-1">
+                    
                     <div class="thumbnail">
-                        <a href="#/item/show/{{item.hash}}"><img class="img-responsive" ng-src="{{item.images[0].path}}" /></a>
+                        <a href="#/item/show/{{item.hash}}"><img class="img-responsive list-img" ng-src="{{item.images[0].path}}" /></a>
                     </div>
                     <qr ng-hide="item.images" text="item.hash" size="100" image="true"></qr>
                     <h4>{{item.title}}</h4>
                     <rating ng-model="item.stars" max="5" readonly="1" class="gold"> </rating>
                     <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span>
                     <p>{{item.about | firstParagraph}}</p>
-                    <h4>O autorze</h4>
+                    <h4>{{item.me}}</h4>
                     <p>{{item.about_me | firstParagraph:200}}</p>
                     <!--img ng-src="item.images[0]"-->
                 </div>

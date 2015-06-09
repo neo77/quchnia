@@ -74,9 +74,9 @@ sub item_add {
     my %p_ = @_;
 
     my $dbh = db_connect;
-    my $sql = 'INSERT INTO items(title, about, about_me, create_date) values(?,?,?,now())';
+    my $sql = 'INSERT INTO items(title, about, about_me, me, create_date) values(?,?,?,?,now())';
     my $query = $dbh->prepare($sql);
-    $query->execute($p_{'title'}, $p_{'about'}, $p_{'about_me'}); 
+    $query->execute($p_{'title'}, $p_{'about'}, $p_{'about_me'}, $p_{'me'}); 
     my $hash = $dbh->{'mysql_insertid'}; 
     for my $image (@{$p_{'images'}}) {
         my $sql = 'INSERT INTO images(item_hash, path) values(?,?)';
@@ -94,7 +94,7 @@ sub _item_update {
 
     my (@fields, @values);
     for my $key (keys %p_) {
-        if ($key =~ /^(title|about|about_me|state|stars)$/) {
+        if ($key =~ /^(title|about|about_me|me|state|stars)$/) {
             push @fields, "`$key`=?";
             push @values, $p_{$key};
         }

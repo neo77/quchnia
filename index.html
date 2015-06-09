@@ -25,17 +25,23 @@
     </head>
 
     <body ng-controller="alertsCtrl" flow-prevent-drop>
-        
+
+
         <div ng-controller="mainCtrl">
             <div ng-include="'partial/carousel.html'"></div>
             <div ng-include="'partial/alerts.html'"></div>
             <div ng-include="'partial/navbar.html'"></div>
 
-
-            <div class="view-container">
-                <div ng-view ng-model="page" class="view-frame"></div>
+            <div class="view-container" >
+                <div class="row">
+                
+                    <div class="col-xs-1 visible-xs"></div>
+                    <div class="col-xs-10 col-sm-12"> 
+                  
+                                <div ng-view ng-model="page" class="view-frame"></div>
+                    </div>
+                </div>
             </div>
-
         </div>
 
     </body>

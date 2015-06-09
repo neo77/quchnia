@@ -14,17 +14,22 @@
                 <form class="form-horizontal">
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <input type="text" ng-model="item.title" class="form-control" id="inputEmail3" placeholder="Tytuł">
+                            <input type="text" ng-model="item.title" class="form-control" id="inputTitle" placeholder="Tytuł">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <textarea rows="10" class="form-control" ng-model="item.about" id="inputPassword3" placeholder="O moim przedmiocie..."></textarea>
+                            <textarea rows="10" class="form-control" ng-model="item.about" id="inputAbout" placeholder="O moim przedmiocie..."></textarea>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <textarea class="form-control" rows="7" ng-model="item.about_me" id="inputText3" placeholder="O mnie..."></textarea>
+                            <input type="text" class="form-control" ng-model="item.me" id="inputMe" placeholder="Imie / ksywa...">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <textarea class="form-control" rows="7" ng-model="item.about_me" id="inputAboutMe" placeholder="O mnie..."></textarea>
                         </div>
                     </div>
                     <div ng-hide="edit" class="form-group">     
