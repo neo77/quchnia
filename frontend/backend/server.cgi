@@ -12,6 +12,7 @@ use warnings;
 use utf8;
 
 use FindBin qw/$Bin/;
+use lib $Bin."../../backend";
 our $VERSION = 1.0;
 use FCGI;           # fastcgi
 use Digest::MD5;    # md5 for token
