@@ -1,0 +1,4 @@
+RewriteRule (.*) server.cgi?$1 [L]
+Options -Indexes +ExecCGI
+AddHandler cgi-script .cgi .pl
+

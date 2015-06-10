@@ -2,6 +2,7 @@
     <div class="col-sm-12 ">
         <div class="row"> 
             <div ng-repeat="item in items | filter:search " > 
+                <div class="clearfix" ng-if="$index % 3 == 0"></div>
                 <div class="col-sm-12 col-md-4">
                     
                     <div class="thumbnail">
