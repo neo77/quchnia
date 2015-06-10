@@ -15,7 +15,7 @@
                 <!--span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span-->
                 <h2>{{item.title}}</h4>
                 <p>{{item.about}}</p>
-                <h4>O autorze</h4>
+                <h4>{{item.me}}</h4>
                 <p>{{item.about_me}}</p>
                 <img ng-src="{{galleryImage}}" ng-show="imageShow" class="img-responsive">
             </div>
