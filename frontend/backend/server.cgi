@@ -12,7 +12,7 @@ use warnings;
 use utf8;
 
 use FindBin qw/$Bin/;
-use lib $Bin."../../backend";
+use lib "/home/neo77/domains/7lam.pl/kuchnia/backend";
 our $VERSION = 1.0;
 use FCGI;           # fastcgi
 use Digest::MD5;    # md5 for token
